@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+package grpc;
+
+option go_package = "github.com/octavio-luna/basic-grpc-api/proto";
+
+message Product { 
+    int32 id = 1;
+    string label = 2;
+    int32 type = 3;
+    optional string downloadlink = 4;
+    optional float weight = 5;
+}
+
+message AddProduct {
+    int32 productID = 1;
+    int32 quantity = 2;
+    int32 userID = 3;
+}
+ 
+message OrderedProduct {
+    int32 id = 1;
+    int32 quantity = 2;
+}
+
+message OrderedProductList {
+    repeated OrderedProduct products = 1;
+}
+
+message Category {
+    int32 id = 1;
+    string label = 2;
+}
+
+message OrderRequest {
+    int32 customerid = 1;
+    repeated OrderedProduct products = 2;
+}
+
+message OrderResponse {
+    int32 id =1;
+    int32 customerid = 2;
+    repeated OrderedProduct products = 3;
+}
+
+message OrderID {
+    int32 id = 1;
+}
+
+message Reply {
+    bool success = 1;
+    optional string message = 2;
+}
+
+message UserId {
+    int32 id = 1;
+}
+
+message ProductList {
+    repeated Product products = 1;
+}
+
+service ECommerceService {
+    rpc AddProductToCart(AddProduct) returns (Reply);
+    rpc GetProductsFromCart(UserId) returns (OrderedProductList);
+    rpc AddOrderFromCart(UserId) returns (OrderResponse);
+    rpc GetProductsFromOrder(OrderID) returns (OrderedProductList);
+    
+    //Added two extra methods for working with FullText products instead onf only IDs
+    rpc AddOrder(OrderRequest) returns (OrderResponse);
+    rpc GetProductsFromIDs(OrderedProductList) returns (ProductList);
+}
