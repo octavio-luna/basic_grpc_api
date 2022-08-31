@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
@@ -30,14 +30,22 @@ type OrderProduct struct {
 }
 
 func main() {
-	db, err := gorm.Open("postgres", "postgres://postgres:docker@localhost:5432/postgres?sslmode=disable")
+	db, err := gorm.Open("postgres", "host=postgresdb port=5432 user=postgres password=postgres dbname=postgres sslmode=disable")
 	if err != nil {
 		panic(err)
 	}
 	defer db.Close()
+	db.DropTable(&Product{}, &Category{}, &Order{}, &OrderProduct{})
+	log.Println("Dropped tables\n")
+
 	db.AutoMigrate(&Product{})
+	log.Println("Migrated products")
 	db.AutoMigrate(&Category{})
+	log.Println("Migrated categories")
 	db.AutoMigrate(&Order{})
+	log.Println("Migrated orders")
 	db.AutoMigrate(&OrderProduct{})
-	fmt.Println("Done migration")
+	log.Println("Migrated order_products\n")
+
+	log.Println("Done migration")
 }

@@ -42,7 +42,7 @@ var categories = []Category{
 }
 
 func main() {
-	db, err := gorm.Open("postgres", "postgres://postgres:docker@localhost:5432/postgres?sslmode=disable")
+	db, err := gorm.Open("postgres", "host=postgresdb port=5432 user=postgres password=postgres dbname=postgres sslmode=disable")
 	if err != nil {
 		panic(err)
 	}

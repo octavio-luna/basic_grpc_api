@@ -1,7 +1,7 @@
 package db
 
 import (
-	"fmt"
+	"log"
 
 	pb "github.com/octavio-luna/basic_grpc_api/proto"
 )
@@ -12,7 +12,7 @@ func (h *Handler) CreateOrder(orderReq *pb.OrderRequest) (*pb.OrderResponse, err
 		UserId int64
 	}
 
-	fmt.Println("AAAAA", orderReq)
+	log.Println("CreateOrder: user: %d products: %d", orderReq.Customerid, orderReq.Products)
 
 	o := order{}
 	err := h.db.Table("orders").Last(&o).Error

@@ -33,10 +33,10 @@ type Config struct {
 func New() *Handler {
 	settings := Config{
 		ServerAddr: ":8080",
-		DBHost:     "localhost",
+		DBHost:     "postgresdb",
 		DBPort:     "5432",
 		DBUser:     "postgres",
-		DBPasswd:   "docker",
+		DBPasswd:   "postgres",
 		DBName:     "postgres",
 	}
 
@@ -60,7 +60,7 @@ func New() *Handler {
 	}
 	handler, err := NewHandler(settings)
 	if err != nil {
-		panic("Error connecting to DB " + err.Error())
+		log.Println("Error connecting to DB " + err.Error())
 	}
 	return handler
 }
